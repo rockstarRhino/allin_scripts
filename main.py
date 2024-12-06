@@ -53,54 +53,7 @@ def StoreAndIntantiateWasmContract():
 def CreateState():
 
     contractAddresses = StoreAndIntantiateWasmContract()
-    for wasmProp in WASM_PROPOSALS:
-        time.sleep(10)
-        contractAddress = contractAddresses[wasmProp['contractAddressKey']]
-        ProposeWasmProposal(contractAddress, wasmProp['content'], wasmProp['proposalID'])
-        print(f"waiting for wasm prop {wasmProp['proposalID']}")
-        if wasmProp['isProposal']:
-            time.sleep(20) # waiting for proposal duration
-            ExecuteWasmGovernanceProposal(contractAddress, wasmProp['proposalID'])
-
-    chunks = [
-        {
-            "fromAcc" : "hotuser",
-            "appID" : 2,
-            "pairID" : 1,
-            "direction" : "sell",
-            "offerCoin" : "20000000ucmdx",
-            "demandCoinDenom" : "uharbor",
-            "price" : 2,
-            "amount" : 10000000
-        },
-        {
-            "fromAcc" : "cooluser",
-            "appID" : 2,
-            "pairID" : 1,
-            "direction" : "sell",
-            "offerCoin" : "20000000ucmdx",
-            "demandCoinDenom" : "uharbor",
-            "price" : 2,
-            "amount" : 10000000
-        },
-        {
-            "fromAcc" : "chilluser",
-            "appID" : 2,
-            "pairID" : 1,
-            "direction" : "sell",
-            "offerCoin" : "20000000ucmdx",
-            "demandCoinDenom" : "uharbor",
-            "price" : 2,
-            "amount" : 10000000
-        }
-    ]
-    threads = []
-    for data in chunks:
-        threads.append(threading.Thread(target=thread, args=(data["fromAcc"], data["appID"], data["pairID"], data["direction"], data["offerCoin"], data["demandCoinDenom"], data["price"], data["amount"])))
-    for t in threads:
-        t.start()
-    for t in threads:
-        t.join()
+    print(contractAddresses)
 
 def main():
     CreateState()
