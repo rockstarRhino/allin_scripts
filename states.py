@@ -1,46 +1,262 @@
 from constants import *
 
+OWNER = "allin1fjagp95gq64etyvh450gzah8zlh9w7k0h5rd6z"  # IMPORTANT
+BONUS = (
+    "allin1dzrkwqyvs6xe5um9pt56m35kw26075fxv0u930"  # COLLECTED WAGER FEE IS SENT HERE
+)
+ALLIN = ""  # MINT/BURN
+
+# Note on callbackIds:
+# - 2 is resolve_bet
+# - 3 is new_multiplayer_setup
+# - 4 is resolve_multiplayer_bet
+
 WASM_CONTRACTS = [
     {
-        "name": "Vesting Contract",
-        "contractAddressKey": "vesting_contract",
-        "contractPath": f"./token_vesting.wasm",
+        "name": "Random Contract",
+        "contractAddressKey": "random_addr",
+        "contractPath": f"../random-new/artifacts/random_new.wasm",
         "initator": {},
-        "formatKeys": []
+        "formatKeys": [],
     },
     {
-        "name": "Locking Contract",
-        "contractAddressKey": "locking_contract",
-        "contractPath": f"./locking_contract.wasm",
+        "name": "Callback Contract",
+        "contractAddressKey": "callback_contract",
+        "contractPath": f"../casino/artifacts/callback_contract.wasm",
         "initator": {
-            "t1": {"period": 500, "weight": "0.25"},
-            "t2": {"period": 1000, "weight": "0.50"},
-            "voting_period": 122500,
-            "vesting_contract": "",
-            "foundation_addr": ["aallin1rljg3wwgv6qezu3p05vxny9pwk3mdwl0ja407z"],
-            "foundation_percentage": "0.2",
-            "surplus_asset_id": 3,
-            "emission": {
-                "app_id": 1,
-                "total_rewards": "10000000000000",
-                "rewards_pending": "10000000000000",
-                "emission_rate": "0.01",
-                "distributed_rewards": "0",
+            "admin": f"{OWNER}",
+        },
+        "formatKeys": [],
+    },
+    {
+        "name": "Bank Contract",
+        "contractAddressKey": "bank_addr",
+        "contractPath": f"../casino/artifacts/bank.wasm",
+        "initator": {
+            "admin": f"{OWNER}",
+            "vault_info": {
+                "cooloff_period": 1800,
+                "max_wager_fee": "0.1",
+                "wager_fee": "0.01",
+                "is_payout_enabled": True,
+                "is_deposit_enabled": True,
+                "is_withdraw_enabled": True,
+                "bonus_address": f"{BONUS}",
+                "primary_token": f"{ALLIN}",
+                "redemption_token": "",
+                "primary_token_max_wager_fee": "0.1",
+                "primary_token_wager_fee": "0.01",
             },
-            "min_lock_amount" : "4",
-            "admin":"aallin1663kc7kwlqxg5s35wuq4nleuqvy5j2tstlkeg2"
+            "lp_limit": 4000,
         },
-        "formatKeys": ['vesting_contract']
+        "formatKeys": [],
+        "callbackIds": [2],
     },
     {
-        "name": "Governance Contract",
-        "contractAddressKey": "governance_contract",
-        "contractPath": f"./governance.wasm",
+        "name": "Andar Bahar",
+        "contractAddressKey": "andarbahar",
+        "contractPath": f"../casino/artifacts/andar_bahar.wasm",
         "initator": {
-            "threshold": {"threshold_quorum": {"threshold": "0.50", "quorum": "0.33"}},
-            "target": "0.0.0.0:9090",
-            "locking_contract": "",
+            "owner": f"{OWNER}",
+            "bank_addr": "",
+            "random_addr": "",
         },
-        "formatKeys": ['locking_contract']
+        "formatKeys": ["bank_addr", "random_addr"],
+        "callbackIds": [2],
     },
+    {
+        "name": "Baccarat",
+        "contractAddressKey": "baccarat",
+        "contractPath": f"../casino/artifacts/baccarat.wasm",
+        "initator": {
+            "owner": f"{OWNER}",
+            "bank_addr": "",
+            "random_addr": "",
+        },
+        "formatKeys": ["bank_addr", "random_addr"],
+        "callbackIds": [2, 3, 4],
+    },
+    {
+        "name": "Classic Dice",
+        "contractAddressKey": "classicdice",
+        "contractPath": f"../casino/artifacts/classic_dice.wasm",
+        "initator": {
+            "owner": f"{OWNER}",
+            "bank_addr": "",
+            "random_addr": "",
+        },
+        "formatKeys": ["bank_addr", "random_addr"],
+        "callbackIds": [2],
+    },
+    {
+        "name": "Coin Flip",
+        "contractAddressKey": "coinflip",
+        "contractPath": f"../casino/artifacts/coin_flip.wasm",
+        "initator": {
+            "owner": f"{OWNER}",
+            "bank_addr": "",
+            "random_addr": "",
+        },
+        "formatKeys": ["bank_addr", "random_addr"],
+        "callbackIds": [2],
+    },
+    {
+        "name": "Dragon Tiger",
+        "contractAddressKey": "dragontiger",
+        "contractPath": f"../casino/artifacts/dragon_tiger.wasm",
+        "initator": {
+            "owner": f"{OWNER}",
+            "bank_addr": "",
+            "random_addr": "",
+        },
+        "formatKeys": ["bank_addr", "random_addr"],
+        "callbackIds": [2],
+    },
+    {
+        "name": "Hash Dice",
+        "contractAddressKey": "hashdice",
+        "contractPath": f"../casino/artifacts/hash_dice.wasm",
+        "initator": {
+            "owner": f"{OWNER}",
+            "bank_addr": "",
+            "random_addr": "",
+        },
+        "formatKeys": ["bank_addr", "random_addr"],
+        "callbackIds": [2],
+    },
+    {
+        "name": "Roulette",
+        "contractAddressKey": "roulette",
+        "contractPath": f"../casino/artifacts/roulette.wasm",
+        "initator": {
+            "owner": f"{OWNER}",
+            "bank_addr": "",
+            "random_addr": "",
+        },
+        "formatKeys": ["bank_addr", "random_addr"],
+        "callbackIds": [2, 3, 4],
+    },
+    {
+        "name": "Seven up Seven down",
+        "contractAddressKey": "sevenupsevendown",
+        "contractPath": f"../casino/artifacts/sevenupsevendown.wasm",
+        "initator": {
+            "owner": f"{OWNER}",
+            "bank_addr": "",
+            "random_addr": "",
+        },
+        "formatKeys": ["bank_addr", "random_addr"],
+        "callbackIds": [2],
+    },
+    {
+        "name": "Slots",
+        "contractAddressKey": "slots",
+        "contractPath": f"../casino/artifacts/slots.wasm",
+        "initator": {
+            "owner": f"{OWNER}",
+            "bet_reel": 3,
+            "bank_addr": "",
+            "random_addr": "",
+            "payouts": [
+                "Dollar - Dollar - Dollar",
+                "Cherry - Cherry - Cherry",
+                "Lemon - Lemon - Lemon",
+                "Lemon - Lemon - Cherry",
+                "Spade - Spade - Spade",
+                "Spade - Spade - Cherry",
+                "Leaf - Leaf - Leaf",
+                "Leaf - Leaf - Cherry",
+                "Bell - Bell - Bell",
+                "Bell - Bell - -",
+                "Bell - - - -",
+            ],
+            "multiplier": [
+                "100",
+                "45",
+                "20",
+                "20",
+                "12",
+                "12",
+                "10",
+                "10",
+                "5",
+                "3",
+                "2",
+            ],
+            "reel_config": [
+                "Leaf",
+                "Bell",
+                "Spade",
+                "Cherry",
+                "Bell",
+                "Leaf",
+                "Lemon",
+                "Leaf",
+                "Spade",
+                "Lemon",
+                "Spade",
+                "Bell",
+                "Spade",
+                "Coin",
+                "Bell",
+                "Dollar",
+                "Lemon",
+                "Cherry",
+                "Leaf",
+                "Bell",
+            ],
+        },
+        "formatKeys": ["bank_addr", "random_addr"],
+        "callbackIds": [2],
+    },
+    # {
+    #     "name": "Limbo",
+    #     "contractAddressKey": "limbo",
+    #     "contractPath": f"../casino/artifacts/limbo.wasm",
+    #     "initator": {
+    #         "owner": f"{OWNER}",
+    #         "bank_addr": "",
+    #         "random_addr": "",
+    #         "max_multiplier": "99",
+    #     },
+    #     "formatKeys": ["bank_addr", "random_addr"],
+    #     "callbackIds": [3,4],
+    # },
+    # {
+    #     "name": "Yolo",
+    #     "contractAddressKey": "yolo",
+    #     "contractPath": f"../casino/artifacts/yolo.wasm",
+    #     "initator": {
+    #         "owner": f"{OWNER}",
+    #         "bank_addr": "",
+    #         "random_addr": "",
+    #         "asset": "", #denom used for betting, only single denom allowed.
+    #         "multiplayer_config": {
+    #             "bet_window_size": 50, # 0 - 255
+    #             "resolve_window_size": 50, # 0 - 255
+    #             "post_bet_window_size": 0, # 0 - 255
+    #         },
+    #         "commission": "100", # 100 = 1%, 10000 = 100%
+    #     },
+    #     "formatKeys": ["bank_addr", "random_addr"],
+    #   "callbackIds": [3,4],
+    # },
+]
+
+# Note:
+# id & denom need be unique.
+
+#     = 1xxx|||xxx|||xxx||| - 18
+DEC18 = 1000000000000000000
+DEC15 = 1000000000000000
+DEC12 = 1000000000000
+DEC6 = 1000000
+
+WHITELIST_ASSET = [
+    {
+        "id": 0,
+        "denom": "adym",
+        "decimals": DEC18,
+        "min_bet": DEC18,
+    }
 ]
